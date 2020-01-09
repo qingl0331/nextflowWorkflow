@@ -1,1 +1,3 @@
 # nextflowWorkflow
+1. The fqScreen.nf is a QC pipeline for paired end reads in for exome, genome or transcriptome sequencing. It includes steps of dedupplication,  adapter and quality trimming, QC with fastqc for reads quality, QC with fastqscreen for sample composition and removal of contaminated reads (this example is human reads, but you can change fastqscreen command and the database in fastqscreen configure file to change what contaminants to remove). 
+2. The metagenomePipe.nf is metagenomic pipeline for paired end reads in metagenome sequencing. Currently, it mainly includes QC steps and HumanN2 classification and functional analysis.
