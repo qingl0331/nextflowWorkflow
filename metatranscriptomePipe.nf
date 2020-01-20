@@ -215,6 +215,7 @@ process trimRna {
  */
 process stitch {
    module 'pear/0.9.6'
+   publishDir "$baseDir/pearLog", mode: 'copy' , pattern: '*stitch.log.txt' 
    input:
    set pair_idRna, file(trimmedReads) from tostitch
   
@@ -301,13 +302,12 @@ process mergeNormrna {
     runbioBakery humann2_join_tables -s --input ${baseDir}/humann2_resultsRna/humann2_out/ --file_name pathabundance --output humann2_4normalize_final_out/humann2_pathabundance.tsv
 runbioBakery humann2_join_tables -s --input ${baseDir}/humann2_resultsRna/humann2_out/ --file_name genefamilies --output humann2_4normalize_final_out/humann2_genefamilies.tsv
 #join matched genome humann2 output per sample into one table
-    mkdir -p humann2_final_matched.genome.out
+   nmkdir -p humann2_final_matched.genome.out
     runbioBakery humann2_join_tables -s --input ${baseDir}/genome_normalization/ --file_name pathabundance --output humann2_final_matched.genome.out/humann2_pathabundance.matchedGenome.tsv
     runbioBakery humann2_join_tables -s --input ${baseDir}/genome_normalization/ --file_name genefamilies --output humann2_final_matched.genome.out/humann2_genefamilies.matchedGenome.tsv
 #Re-normalize RNASeq gene family and pathway abundances by corresponding DNA-level outputs to quantify microbial expression independent of gene copy number 
-    mkdir -p humann2_genomeNormalized
-    runbioBakery humann2_rna_dna_norm -d humann2_final_matched.genome.out/humann2_pathabundance.matchedGenome.tsv -r humann2_4normalize_final_out/humann2_pathabundance.tsv -o humann2_genomeNormalized/humann2_pathabundance.DNAnormalizedRNA
-    runbioBakery humann2_rna_dna_norm -d humann2_final_matched.genome.out/humann2_genefamilies.matchedGenome.tsv -r humann2_4normalize_final_out/humann2_genefamilies.tsv -o humann2_genomeNormalized/humann2_genefamilies.DNAnormalizedRNA
+    runbioBakery humann2_rna_dna_norm -d humann2_final_matched.genome.out/humann2_pathabundance.matchedGenome.tsv -r humann2_4normalize_final_out/humann2_pathabundance.tsv -o humann2_pathabundance.DNAnormalizedRNA
+    runbioBakery humann2_rna_dna_norm -d humann2_final_matched.genome.out/humann2_genefamilies.matchedGenome.tsv -r humann2_4normalize_final_out/humann2_genefamilies.tsv -o humann2_genefamilies.DNAnormalizedRNA
    
     """
 }
