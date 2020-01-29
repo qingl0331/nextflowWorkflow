@@ -3,3 +3,4 @@
 2. The metagenomePipe.nf is metagenomic pipeline for paired end reads in metagenome sequencing. Currently, it mainly includes QC steps and HumanN2 classification and functional analysis.
 3. metatranscriptomePipe.nf is metatranscriptome pipeline for paired end reads in metatranscriptome paried with metagenome sequencing. Please notice that it will run both metagenome and metatranscriptome analysis and use the output of metagenome to normalize the paired meratranscriptome, and output both metagenome and metatranscripotme results.   
 4. metatranscriptome pipeline need some accessory scripts and they are provided in the folder of accessoryScripts. 
+5. loh.nf is the clinical genomic pipeline that detects LOH event from paired normal and tumor samples. The accessory scripts are provided in the folder of accessoryScripts. 
