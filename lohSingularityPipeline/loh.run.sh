@@ -2,6 +2,7 @@
 #SBATCH --account=hci-kp
 #SBATCH --partition=hci-kp
 #SBATCH -N 1
+#SBATCH -t 2:00:00
 set -e; start=$(date +'%s');  touch STARTED
 
 
