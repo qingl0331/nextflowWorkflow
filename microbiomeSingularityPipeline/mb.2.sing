@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Bash script to run inside the container
+#exit on any app error and save start time
+set -e
+cd $jobDir
+
+NCPU=`nproc`
+# nextflow will cp fastq files into working dir : GET sample prefix from Fastq file names (should be 2 files)
+R1=`echo *R1_001.fastq.gz`
+R2=`echo *R2_001.fastq.gz`
+OUT=`echo ${R1%%_R*}`
+/bbmap/clumpify.sh -Xmx50g in1=$R1 in2=$R2 out1=$OUT.clump1.fq.gz \
+out2=$OUT.clump2.fq.gz dupedist=12000 dedupe=t optical=t
+#cutadape
+/usr/bin/cutadapt -j 0 -O 6 -m 20 -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -o ${OUT}.trimmed_R1.fq -p ${OUT}.trimmed_R2.fq -j $NCPU -O 6 -m 20 ${OUT}.clump*.fq.gz > ${OUT}.cutadapt.txt
+mkdir fastqc_${OUT}_logs
+/usr/bin/fastqc -t $NCPU -f fastq -q ${OUT}.trimmed_R1.fq -o fastqc_${OUT}_logs/
+#stitch paired end with pear
+/pear-0.9.11-linux-x86_64/bin/pear -f ${OUT}.trimmed_R1.fq -r ${OUT}.trimmed_R2.fq -j $NCPU -o $OUT >> ${OUT}.stitch.log.txt
+#sortmerna to remove rRNA
+/usr/bin/sortmerna --ref $srRnaDb/silva-bac-16s-id90.fasta,$srRnaDb/silva-bac-16s-id90.idx:\
+$srRnaDb/silva-bac-23s-id98.fasta,$srRnaDb/silva-bac-23s-id98.idx:\
+$srRnaDb/silva-euk-18s-id95.fasta,$srRnaDb/silva-euk-18s-id95.idx:\
+$srRnaDb/silva-euk-28s-id98.fasta,$srRnaDb/silva-euk-28s-id98.idx \
+--reads $OUT.assembled.fastq --aligned $OUT.rRNA --other $OUT.no_rRNA --fastx --log -a $NCPU -v
+grep -v '^$' $OUT.no_rRNA.fastq > tmpfile
+mv tmpfile $OUT.no_rRNA.fastq
+#humann2 run pari with metagenome taxonomic file
+source /root/miniconda2/etc/profile.d/conda.sh
+conda activate biobakery_env
+prName=`echo $OUT | cut -d "_" -f 1`
+humann2 --threads $NCPU --input $OUT.no_rRNA.fastq --output humann2_out.$OUT/ --protein-database $hn2pdb/ --nucleotide-database=$hn2ndb/  --taxonomic-profile $runDir/genome_normalization/$prName.norm.tsv --prescreen-threshold 0.0001
+
+
+
+

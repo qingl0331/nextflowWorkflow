@@ -1,0 +1,33 @@
+#!/bin/bash
+# Bash script to run inside the container
+#exit on any app error and save start time
+set -e
+cd $jobDir
+# Concatenate lanes
+R1=`echo *R1_001.fastq.gz`
+R2=`echo *R2_001.fastq.gz`
+# GET sample prefix
+#modify OUT, so it is consistant with pair_id
+OUT=`echo ${R1%%_R*}`
+NCPU=`nproc`
+/bbmap/clumpify.sh -Xmx50g in1=$R1 in2=$R2 out1=$OUT.clump1.fq.gz \
+out2=$OUT.clump2.fq.gz dupedist=12000 dedupe=t optical=t
+mkdir -p fastqc_${OUT}_logs
+/usr/bin/fastqc -o fastqc_${OUT}_logs -T $NCPU -f fastq $OUT.clump1.fq.gz
+source /root/miniconda2/etc/profile.d/conda.sh
+conda activate biobakery_env
+kneaddata --input $OUT.clump1.fq.gz --input $OUT.clump2.fq.gz -o kneaddata_out.$OUT/ -db $g38Dir/GRCh38 -t $NCPU --trimmomatic-options "SLIDINGWINDOW:4:20 MINLEN:50" --bowtie2-options "--very-sensitive --dovetail" --remove-intermediate-output 
+kneaddata_read_count_table --input kneaddata_out.$OUT --output $OUT.kneaddata_read_counts.human.txt
+cat kneaddata_out.$OUT/$OUT.clump1_kneaddata_paired_1.fastq kneaddata_out.$OUT/$OUT.clump1_kneaddata_paired_2.fastq > $OUT.fq
+humann2 --threads $NCPU  --input $OUT.fq --output humann2_out.$OUT/ --protein-database $hn2pdb/ --nucleotide-database=$hn2ndb/ --prescreen-threshold 0.0001 
+#mimic begining of xxmerge.sh to copy/mv files
+mkdir -p $runDir/humann2_out
+mv humann2_out.$OUT/*tsv $runDir/humann2_out/
+mkdir -p $runDir/metaphlan2_out
+cp humann2_out.$OUT/*temp/*metaphlan_bugs_list.tsv $runDir/metaphlan2_out/
+
+
+
+
+
+
