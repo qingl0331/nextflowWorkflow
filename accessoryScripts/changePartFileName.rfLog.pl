@@ -5,7 +5,7 @@ use File::Basename qw(basename);
 #-----------------------------------------------------------------------------
 #----------------------------------- MAIN ------------------------------------
 #-----------------------------------------------------------------------------
-my $usage= "perl changePartFileName.rfLog.pl file \nthis is to reformat sortmerna no_rRNA log file and change the file name\n";
+my $usage= "perl changePartFileName.rfLog.pl file \nthis is to reformat humann2 bowtie2 log file and change the file name\n";
 my $inputFile = $ARGV[0];
 die $usage unless $inputFile;
 my$fileName=basename $inputFile;
