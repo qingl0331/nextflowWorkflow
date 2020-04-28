@@ -6,5 +6,5 @@
 
 Both the loh and microbiome pipelines have a singularity version for slurm systems in the corresponding folders.  To run the microbiome pipeline, you shoud 
 * download the scripts in accessoryScripts and microbiomeSingularityPipeline sub-directories
-* run: $nextflow run metagnom.master.nf -with-trace -resume --reads "xx/xx" --outdir "xx/xx" 
-* or $nextflow run metatrans.master.nf -with-trace -resume --reads "xx/xx" --rnaReads "xx/xx" --outdir "xx/xx" --rnaOutdir "xx/xx" --sampSheet "xx/xx"
+* run: nextflow run metagnom.master.nf -with-trace -resume --reads <path to Fastqs> --outdir <output directory> 
+* or nextflow run metatrans.master.nf -with-trace -resume --reads "xx/xx" --rnaReads "xx/xx" --outdir "xx/xx" --rnaOutdir "xx/xx" --sampSheet "xx/xx"
