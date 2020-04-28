@@ -1,9 +1,10 @@
-# nextflowWorkflow
-1. The fqScreen.nf is a QC pipeline for paired end reads in for exome, genome or transcriptome sequencing. It includes steps of dedupplication,  adapter and quality trimming, QC with fastqc for reads quality, QC with fastqscreen for sample composition and removal of contaminated reads (this example is human reads, but you can change fastqscreen command and the database in fastqscreen configure file to change what contaminants to remove). 
-2. The metagenomePipe.nf is metagenomic pipeline for paired end reads in metagenome sequencing. Currently, it mainly includes QC steps and HumanN2 classification and functional analysis.
-3. metatranscriptomePipe.nf is metatranscriptome pipeline for paired end reads in metatranscriptome paried with metagenome sequencing. Please notice that it will run both metagenome and metatranscriptome analysis and use the output of metagenome to normalize the paired meratranscriptome, and output both metagenome and metatranscripotme results.   
-4. metatranscriptome pipeline need some accessory scripts and they are provided in the folder of accessoryScripts. 
-5. loh.nf is the clinical genomic pipeline that detects LOH event from paired normal and tumor samples. The accessory scripts are provided in the folder of accessoryScripts. 
-6. Both loh pipeline and microbiome pipeline have singularity version now (please see sub-directories accordingly). They are desigend for slurm system. Highly recommend using the singularity version - all the heavy lifting apps needed to run the pipeline are already installed in the singularity container, so it should be ready to go. 
-7. For example, to run singularity version of microbiome pipeline, you only need to download 1. the scripts in accessoryScripts sub-directory and put them in your path; 2. the scripts in  microbiomeSingularityPipeline sub-directory and put all the scripts in your working directory. Then in your terminal (better run it in a screen or with nohup), type: $nextflow run metagnom.master.nf -with-trace -resume --reads "xx/xx" --outdir "xx/xx" 
-$nextflow run metatrans.master.nf -with-trace -resume --reads "xx/xx" --rnaReads "xx/xx" --outdir "xx/xx" --rnaOutdir "xx/xx" --sampSheet "xx/xx"
+# nextflow workflows
+1. The fqScreen.nf is a QC pipeline for paired end reads for exome, genome or transcriptome sequencing. It includes steps of deduplication, adapter and quality trimming, QC with fastqc for reads quality, QC with fastqscreen for sample composition and removal of contaminated reads (the example is for human reads, but you can update the databases in the fastqscreen config file). 
+2. The metagenomePipe.nf is a metagenomic pipeline for paired end reads in metagenome sequencing. Currently, it mainly includes QC steps and HUMAnN2 classification and functional analysis.
+3. The metatranscriptomePipe.nf is a metatranscriptome pipeline for paired end reads in metatranscriptome sequencing. Please note that it will run the metagenome analysis and use the output to normalize the paired metatranscriptome. Accessory scripts are provided in the accessoryScripts folder.  
+4. The loh.nf is a clinical genomic pipeline that detects LOH event from paired normal and tumor samples. The accessory scripts are also provided in accessoryScripts. 
+
+Both the loh and microbiome pipelines have a singularity version for slurm systems in the corresponding folders.  To run the microbiome pipeline, you shoud 
+* download the scripts in accessoryScripts and microbiomeSingularityPipeline sub-directories
+* run: nextflow run metagnom.master.nf -with-trace -resume --reads <path to Fastqs> --outdir <output directory> 
+* or nextflow run metatrans.master.nf -with-trace -resume --reads "xx/xx" --rnaReads "xx/xx" --outdir "xx/xx" --rnaOutdir "xx/xx" --sampSheet "xx/xx"
