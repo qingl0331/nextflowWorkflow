@@ -5,6 +5,6 @@
 4. The loh.nf is a clinical genomic pipeline that detects LOH event from paired normal and tumor samples. The accessory scripts are also provided in accessoryScripts. 
 
 Both the loh and microbiome pipelines have a singularity version for slurm systems in the corresponding folders.  To run the microbiome pipeline, you shoud 
-* download the scripts in accessoryScripts and microbiomeSingularityPipeline sub-directories
+* download the scripts in accessoryScripts sub-directory and put them in your path; Download the scripts/sample sheets in microbiomeSingularityPipeline sub-directory and put them in your working directory;
 * run: nextflow run metagnom.master.nf -with-trace -resume --reads "path to Fastqs/*_R{1,2}*.fastq.gz" --outdir "output directory" 
 * or nextflow run metatrans.master.nf -with-trace -resume --reads "path to Fastqs/*_R{1,2}*.fastq.gz" --rnaReads "path to RNASeq Fastqs/*_R{1,2}*.fastq.gz" --outdir "output directory for genome" --rnaOutdir "output directory for transcriptome" --sampSheet "xx/xx"
