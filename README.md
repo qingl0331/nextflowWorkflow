@@ -6,6 +6,8 @@
 5. The 16sPipeline folder contains the QIIME2 based 16S rRNA data processing and analysis pipelines.
 6. The bacteriaWGS_alignVar.nf is a GATK4 based  all-inclusive bacteria variant call pipeline, which includes alignment, QC, variant call and variant annotation. 
 7. The bacteriaWGS_alignVar.dsl2.nf is a DSL2 incorporated, modularized version for bacteriaWGS_alignVar.nf, compatible with nextflow version 20.10 or latter. You need execute it with -profile slurm option. 
+8. The CopyAnalysis folder contains a Sentieon CNV workflow generating germline Copy Number Variant calls.This workflow is compatible can be run within tnRunner. 
+
     
 
 Both the loh and microbiome pipelines have a singularity version for slurm systems in the corresponding folders.  To run the microbiome pipeline, you shoud 
