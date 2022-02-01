@@ -5,10 +5,13 @@
 
     
 
-* run on chpc:example  
-* #in screen
+* run on chpc:
+* For example, in screen:
+>
 $module load nextflow
+>
 $nextflow run q2prescreenFilt.dsl2.nf --reads "/uufs/chpc.utah.edu/common/home/hcibcore/u0762203/microbiomeTestPipe/16s/testReads/*_R{1,2}*.fastq.gz" --fqsConfig "/uufs/chpc.utah.edu/common/home/hcibcore/u0762203/microbiomeTestPipe/16s/fastq_screen.conf"
-
+>
 $sb q2pipe16s.process.visualInspectBfDada2.sh
+>
 $sb q2pipe16s.process.sh 
