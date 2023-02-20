@@ -3,7 +3,7 @@
 2. The 16S data processing pipelines are designed to process reads with V3V4 primer, and are branched into two pipelines - gut micicrobe pipeline and enviromental microbe pipeline. Both of which are implemented with nextflow and fastqscreen for quick data processing and QC, and they use DADA2 for denoising for increased sensitivity. 
 3. The gut micicrobe pipeline uses greengene database, and the enviromental microbe pipeline uses SILVA database. The enviromental microbe pipeline has an additional filter step, using fastqscreen filter mode to filter out Mitochondria and Plastid reads before import to QIIME2 to increase specificity.
 
-    
+- [EMPprotocol/](EMPprotocol/): Directory containing nextflow and bash scripts of a special version of gut micicrobe pipeline with EMP protocol using V4 primer.    
 
 * run on chpc:
 * For example, in screen:
